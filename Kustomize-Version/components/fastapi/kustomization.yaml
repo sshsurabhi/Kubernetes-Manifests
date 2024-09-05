@@ -1,0 +1,12 @@
+#/home/ubuntu/kube-kustomize/components/fastapi/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - fastapi.yaml
+
+configMapGenerator:
+  - name: fastapi-config
+    literals:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=5000

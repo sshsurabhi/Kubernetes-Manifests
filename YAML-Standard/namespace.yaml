@@ -1,0 +1,5 @@
+# yaml-standard/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: standard

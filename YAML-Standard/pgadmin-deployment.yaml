@@ -1,0 +1,40 @@
+# yaml-standard/pgadmin-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  namespace: standard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      containers:
+        - name: pgadmin
+          image: dpage/pgadmin4
+          ports:
+            - containerPort: 80
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "admin@admin.com"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: "root"
+---
+# yaml-standard/pgadmin-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin
+  namespace: standard
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: pgadmin
+  type: NodePort

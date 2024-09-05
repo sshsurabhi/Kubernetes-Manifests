@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fastapi-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "local-path"
+  hostPath:
+    path: "/mnt/data/fastapi"  # Adjust this path as needed
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "local-path"
+  hostPath:
+    path: "/mnt/data/postgres"  # Adjust this path as needed

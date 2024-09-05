@@ -1,0 +1,14 @@
+#/home/ubuntu/kube-kustomize/components/postgres/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - postgres.yaml
+
+configMapGenerator:
+  - name: postgres-config
+    literals:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=storedb
+      - POSTGRES_HOST_AUTH_METHOD=trust

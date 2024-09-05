@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fastapi.name | default "fastapi" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.fastapi.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fastapi.name | default "fastapi" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fastapi.name | default "fastapi" }}
+    spec:
+      containers:
+        - name: {{ .Values.fastapi.name | default "fastapi" }}
+          image: "{{ .Values.fastapi.image }}:{{ .Values.fastapi.imageTag }}"
+          ports:
+            - containerPort: 5000 #{{ .Values.fastapi.service.port }}
+          volumeMounts:
+            - mountPath: /data
+              name: fastapi-storage
+      volumes:
+        - name: fastapi-storage
+          persistentVolumeClaim:
+            claimName: fastapi-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.postgres.name | default "postgres" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.postgres.name | default "postgres" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.postgres.name | default "postgres" }}
+    spec:
+      containers:
+        - name: {{ .Values.postgres.name | default "postgres" }}
+          image: {{ .Values.postgres.image }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.credentials.username }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.credentials.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.credentials.database }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.pgadmin.name | default "pgadmin" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.pgadmin.name | default "pgadmin" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.pgadmin.name | default "pgadmin" }}
+    spec:
+      containers:
+        - name: {{ .Values.pgadmin.name | default "pgadmin" }}
+          image: {{ .Values.pgadmin.image }}
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: {{ .Values.pgadmin.credentials.email }}
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: {{ .Values.pgadmin.credentials.password }}

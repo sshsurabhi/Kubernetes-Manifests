@@ -1,0 +1,14 @@
+# yaml-standard/postgres-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  namespace: standard
+spec:
+  storageClassName: local-path
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data/postgres"

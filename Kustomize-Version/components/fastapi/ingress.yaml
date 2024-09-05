@@ -1,0 +1,25 @@
+# yaml-standard/fastapi-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastapi-ingress
+  namespace: kustomize
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+      - standardyaml.course-datascientest.cloudns.ch
+      secretName: fastapi-tls
+  rules:
+  - host: standardyaml.course-datascientest.cloudns.ch
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+             service:
+              name: fastapi
+              port:
+                number: 80

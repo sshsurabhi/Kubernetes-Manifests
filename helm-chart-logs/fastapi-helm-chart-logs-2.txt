@@ -1,0 +1,20 @@
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+INFO:     10.42.0.1:23124 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:60688 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:46212 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:37258 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     10.42.0.8:33890 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:59916 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     10.42.0.8:55372 - "GET /.git/config HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:27322 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.1:27322 - "GET /favicon.ico HTTP/1.1" 405 Method Not Allowed
+INFO:     10.42.0.8:40212 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:36424 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     10.42.0.8:38194 - "POST / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:44300 - "GET /users HTTP/1.1" 200 OK
+INFO:     10.42.0.8:59586 - "GET /users/count HTTP/1.1" 200 OK
+INFO:     10.42.0.8:53486 - "GET / HTTP/1.1" 200 OK
+INFO:     10.42.0.8:32928 - "GET /users HTTP/1.1" 200 OK

@@ -1,0 +1,58 @@
+# Global configurations
+namespace: helm
+storage:
+  size: 10Gi
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: "local-path"
+
+# FastAPI service configurations
+fastapi:
+  image: "surabhiharsha5/fastapi"
+  imageTag: "latest"
+  replicas: 3
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    className: traefik
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    hosts:
+      - host: "standardyaml.course-datascientest.cloudns.ch"
+        paths:
+          - path: "/"
+            pathType: Prefix
+    backend:
+      service:
+        name: fastapi
+        port:
+          number: 80
+    tls:
+      - hosts:
+          - "standardyaml.course-datascientest.cloudns.ch"
+        secretName: "fastapi-tls"
+
+# PostgreSQL service configurations
+postgres:
+  image: "postgres:12.0-alpine"
+  containerName: "db"
+  service:
+    type: ClusterIP
+    port: 5432
+  credentials:
+    username: "admin"
+    password: "password"
+    database: "storedb"
+  persistence:
+    enabled: true
+
+# PGAdmin service configurations
+pgadmin:
+  image: "dpage/pgadmin4"
+  service:
+    type: ClusterIP
+    port: 80
+  credentials:
+    email: "admin@admin.com"
+    password: "root"

@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2  # Use v2beta2 to take advantage of advanced features.
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fastapi-hpa  # Replace with your application name
+  namespace: kustomize        # Ensure it is in the correct namespace
+spec:
+  minReplicas: 3
+  maxReplicas: 6
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment           # Change to the correct kind if not Deployment
+    name: fastapi # Replace with the name of your Deployment
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

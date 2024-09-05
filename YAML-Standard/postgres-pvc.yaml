@@ -1,0 +1,13 @@
+# yaml-standard/postgres-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: standard
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.fastapi.service.name | default "fastapi" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: NodePort  #{{ .Values.fastapi.service.type }}
+  ports:
+    - port: {{ .Values.fastapi.service.port }}
+      targetPort: 5000 #{{ .Values.fastapi.service.port }}
+      nodePort: 32000
+  selector:
+    app: {{ .Values.fastapi.name | default "fastapi" }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: db # {{ .Values.postgres.service.name | default "postgres-service" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ .Values.postgres.service.type }}
+  ports:
+    - port: {{ .Values.postgres.service.port }}
+      targetPort: {{ .Values.postgres.service.port }}
+  selector:
+    app: {{ .Values.postgres.name | default "postgres" }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.pgadmin.service.name | default "pgadmin-service" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ .Values.pgadmin.service.type }}
+  ports:
+    - port: {{ .Values.pgadmin.service.port }}
+      targetPort: {{ .Values.pgadmin.service.port }}
+  selector:
+    app: {{ .Values.pgadmin.name | default "pgadmin" }}

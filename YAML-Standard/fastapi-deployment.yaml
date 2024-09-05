@@ -1,0 +1,40 @@
+# yaml-standard/fastapi-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi
+  namespace: standard
+spec:
+  replicas: 3  # Adjust as needed
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+      - name: fastapi
+        image: surabhiharsha5/fastapi:latest  # Make sure this matches your image
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://admin:password@db:5432/storedb"
+---
+# yaml-standard/fastapi-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi
+  namespace: standard
+spec:
+  type: NodePort  # Use LoadBalancer to expose to the internet
+  selector:
+    app: fastapi
+  ports:
+    - protocol: TCP
+      port: 80   # External port
+      targetPort: 5000 
+      nodePort: 32000

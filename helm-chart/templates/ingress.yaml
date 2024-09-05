@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastapi-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+{{- if .Values.fastapi.ingress.annotations }}
+  {{- range $key, $value := .Values.fastapi.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  className: traefik
+  tls:
+{{- if .Values.fastapi.ingress.tls }}
+  {{- range .Values.fastapi.ingress.tls }}
+  - hosts:
+    {{- range .hosts }}
+      - {{ . | quote }}
+    {{- end }}
+    secretName: {{ .secretName | quote }}
+  {{- end }}
+{{- end }}
+  rules:
+{{- range .Values.fastapi.ingress.hosts }}
+  - host: {{ .host | quote }}
+    http:
+      paths:
+      {{- range .paths }}
+      - path: {{ .path }}
+        pathType: {{ .pathType | default "Prefix" }}
+        backend:
+          service:
+            name: {{ $.Values.fastapi.ingress.backend.service.name | default "fastapi-service" }}
+            port:
+              number: {{ $.Values.fastapi.service.port | int }}
+      {{- end }}
+{{- end }}

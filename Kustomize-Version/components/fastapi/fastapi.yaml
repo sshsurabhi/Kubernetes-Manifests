@@ -1,0 +1,47 @@
+#kube-kustomize/bases/fastapi.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi
+  namespace: kustomize
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+      - name: fastapi
+        image: surabhiharsha5/fastapi:latest  # Make sure this matches your image
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://admin:password@db:5432/storedb"
+
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi
+spec:
+  type: NodePort  # Use LoadBalancer to expose to the internet
+  selector:
+    app: fastapi
+  ports:
+    - protocol: TCP
+      port: 80   # External port
+      targetPort: 5000 
+      nodePort: 32000

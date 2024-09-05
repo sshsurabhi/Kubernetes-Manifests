@@ -1,0 +1,12 @@
+#/home/ubuntu/kube-kustomize/components/pgadmin/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - pgadmin.yaml
+
+configMapGenerator:
+  - name: pgadmin-config
+    literals:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
